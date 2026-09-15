@@ -1,0 +1,7 @@
+services:
+  - type: web
+    name: youtube-ogg
+    runtime: python
+    buildCommand: pip install -r backend/requirements.txt
+    startCommand: cd backend && python main.py
+    healthCheckPath: /health

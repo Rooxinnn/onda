@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>YouTube → OGG</title>
+</head>
+<body>
+  <h1>YouTube → .ogg</h1>
+  <input id="url" type="url" placeholder="Cole o link do YouTube" size="50">
+  <button onclick="baixarVideo()">Baixar em .ogg</button>
+  <p id="status"></p>
+
+  <script>
+    // Troque pela URL do seu serviço no Render.
+    const API_BASE = "https://seu-site-no-render.onrender.com";
+
+    async function baixarVideo() {
+      const url = document.getElementById("url").value.trim();
+      const status = document.getElementById("status");
+
+      if (!url) {
+        alert("Cole o link do YouTube!");
+        return;
+      }
+
+      status.textContent = "Processando...";
+
+      try {
+        const res = await fetch(`${API_BASE}/api/download`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ url })
+        });
+
+        const data = await res.json();
+
+        if (!res.ok) {
+          throw new Error(data.details || data.error || "Erro desconhecido");
+        }
+
+        status.textContent = data.message || "Download concluído!";
+      } catch (err) {
+        status.textContent = `Erro: ${err.message}`;
+      }
+    }
+  </script>
+</body>
+</html>
